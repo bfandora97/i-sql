@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SQL Query Pass — FHI · FHTB</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="wrap">
+
+    <!-- badge header -->
+    <div class="badge">
+      <p class="eyebrow">FHI 2026 · FHTB 2026 — Query Pass</p>
+      <h1>SQL Practice Console</h1>
+      <p class="sub">Latihan SQL bertahap, mengikuti kurikulum <b>SQL with Baraa</b>, di atas data pameran nyata.</p>
+      <div class="stamps">
+        <div class="n"><span id="solvedN">0</span></div>
+        <div class="lbl">Soal Lolos</div>
+        <div class="strip" id="strip"></div>
+      </div>
+    </div>
+
+    <!-- loading state -->
+    <div id="loader" class="card pad loader"><span class="spin"></span>Memuat mesin SQLite…</div>
+
+    <!-- app (hidden until db ready) -->
+    <div class="grid" id="app" style="display:none">
+
+      <!-- LEFT: curriculum nav + current problem + schema -->
+      <div class="card pad">
+        <h2>Materi</h2>
+        <!-- buildNav() renders module sections + problem chips here -->
+        <div id="nav"></div>
+
+        <span class="level" id="lvl"></span>
+        <div class="ptitle" id="ptitle">Pilih soal untuk mulai</div>
+        <div class="task" id="task"></div>
+
+        <details id="hintBox">
+          <summary>Petunjuk &amp; kunci</summary>
+          <div class="hint" id="hint"></div>
+          <button class="act small" style="margin-top:10px" id="revealBtn">Lihat kunci jawaban</button>
+          <div class="keyq" id="keyq" style="display:none"></div>
+        </details>
+
+        <div class="schema">
+          <h2 style="margin-top:20px">Skema: <span style="color:#ffd479;font-family:var(--mono)">registrations</span> (30 baris) · <span style="color:#ffd479;font-family:var(--mono)">exhibitors</span> (12 baris)</h2>
+          <table class="sch">
+            <thead><tr><th>Tabel</th><th>Kolom</th><th>Tipe</th><th>Keterangan</th></tr></thead>
+            <tbody id="schBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- RIGHT: editor + verdict + result -->
+      <div class="card pad">
+        <h2>Editor</h2>
+        <div class="tools">
+          <button class="act run" id="runBtn">▶ Run &amp; Cek</button>
+          <button class="act small" id="peekBtn">Intip data</button>
+          <button class="act small" id="clearBtn">Bersihkan</button>
+          <span class="spacer"></span>
+          <span class="kbd">Ctrl/⌘ + Enter</span>
+        </div>
+        <textarea id="ed" spellcheck="false" placeholder="SELECT ... FROM registrations WHERE ...;"></textarea>
+
+        <div class="verdict" id="verdict"><span class="ico" id="vico"></span><div id="vtxt"></div></div>
+
+        <div class="resultwrap" id="resultwrap" style="display:none">
+          <div class="meta" id="resmeta"></div>
+          <div class="tbl"><table class="res" id="res"></table></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="foot">
+      Mesin: SQLite (in-browser) · batasi baris pakai <b>LIMIT</b> · di SQL Server pakai <b>SELECT TOP n</b>
+      &nbsp;·&nbsp; <a class="reset" id="resetBtn">Reset progress</a>
+    </div>
+  </div>
+
+  <!-- load order matters -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/sql-wasm.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/curriculum.js"></script>
+  <script src="js/problems.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
