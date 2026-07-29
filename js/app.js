@@ -38,6 +38,7 @@ async function boot() {
       $('app').style.display = 'flex';
       $('navToggleBtn').onclick = () => $('sidebar').classList.toggle('open');
       buildSchema();
+      buildRail();
       buildNav();
       refreshProgress();
       for (const mod of CURRICULUM) {
@@ -72,7 +73,7 @@ function buildNav() {
   const parts = [];
   CURRICULUM.forEach(mod => {
     const openAttr = mod.id === openModId ? ' open' : '';
-    parts.push(`<details class="modsec"${openAttr}><summary>${esc(mod.module)}</summary>`);
+    parts.push(`<details class="modsec"${openAttr} data-modid="${esc(mod.id)}"><summary>${esc(mod.module)}</summary>`);
 
     if (mod.engine === 'tsql' || mod.engine === 'concept') {
       parts.push(`<div class="hint">${esc(mod.note || 'Materi teori — tidak ada soal interaktif di app ini.')}</div>`);
@@ -110,6 +111,20 @@ function buildNav() {
     chip.onclick = () => {
       const problem = findProblemById(chip.dataset.id);
       if (problem) selectProblem(problem);
+    };
+  });
+}
+
+// --- rail: minimized sidebar state — just numbered module buttons -----------
+function buildRail() {
+  $('rail').innerHTML = CURRICULUM.map((mod, i) =>
+    `<button class="railnum" data-modid="${esc(mod.id)}" title="${esc(mod.module)}">${i + 1}</button>`
+  ).join('');
+  $('rail').querySelectorAll('.railnum').forEach(btn => {
+    btn.onclick = () => {
+      $('sidebar').classList.add('open');
+      const sec = $('nav').querySelector(`details[data-modid="${btn.dataset.modid}"]`);
+      if (sec) sec.open = true;
     };
   });
 }
