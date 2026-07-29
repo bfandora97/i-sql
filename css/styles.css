@@ -11,9 +11,9 @@
       radial-gradient(1200px 500px at 85% -10%, rgba(242,179,56,.07), transparent 60%),
       var(--ink);
     color:var(--txt); font-family:var(--body); line-height:1.5;
-    -webkit-font-smoothing:antialiased; padding:22px; min-height:100vh;}
+    -webkit-font-smoothing:antialiased; padding:22px 40px; min-height:100vh;}
   a{color:var(--gold)}
-  .wrap{max-width:min(1760px, 96vw); margin:0 auto;}
+  .wrap{max-width:min(1680px, 90vw); margin:0 auto;}
 
   /* ---------- auth bar ---------- */
   .authbar{display:flex; align-items:center; justify-content:flex-end; gap:8px; margin-bottom:10px; flex-wrap:wrap;}
