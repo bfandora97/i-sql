@@ -22,6 +22,13 @@
   .authinput:focus{border-color:var(--gold);}
   .authmail{font-family:var(--mono); font-size:12px; color:var(--dim);}
   .authmsg{font-family:var(--mono); font-size:11.5px; color:var(--dim); max-width:280px;}
+  .accountmenu{position:relative;}
+  .avatarBtn{width:32px; height:32px; border-radius:50%; border:none; cursor:pointer;
+    background:linear-gradient(var(--gold),#e08b2a); color:#20160a; font-family:var(--disp); font-weight:700; font-size:14px;}
+  .accountdropdown{display:none; position:absolute; top:calc(100% + 8px); right:0; z-index:10;
+    flex-direction:column; align-items:flex-end; gap:8px; background:var(--panel); border:1px solid var(--line);
+    border-radius:10px; padding:12px 14px; min-width:190px; box-shadow:0 20px 40px -16px rgba(0,0,0,.7);}
+  .accountdropdown.open{display:flex;}
 
   /* ---------- badge header (signature) ---------- */
   .badge{position:relative; background:linear-gradient(150deg,#232a42 0%, #1b2033 60%, #181c2b 100%);

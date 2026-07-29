@@ -28,11 +28,25 @@ function renderAuthUI() {
   if (!box) return;
 
   if (currentUser) {
+    const initial = currentUser.email.charAt(0).toUpperCase();
     box.innerHTML = `
-      <span class="authmail">${esc(currentUser.email)}</span>
-      <button class="act small" id="logoutBtn">Keluar</button>
+      <div class="accountmenu">
+        <button class="avatarBtn" id="avatarBtn" title="${esc(currentUser.email)}">${esc(initial)}</button>
+        <div class="accountdropdown" id="accountdropdown">
+          <span class="authmail">${esc(currentUser.email)}</span>
+          <button class="act small" id="logoutBtn">Keluar</button>
+        </div>
+      </div>
     `;
+    document.getElementById('avatarBtn').onclick = (e) => {
+      e.stopPropagation();
+      document.getElementById('accountdropdown').classList.toggle('open');
+    };
     document.getElementById('logoutBtn').onclick = () => supabaseClient.auth.signOut();
+    document.addEventListener('click', () => {
+      const dd = document.getElementById('accountdropdown');
+      if (dd) dd.classList.remove('open');
+    });
     return;
   }
 
