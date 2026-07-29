@@ -72,25 +72,45 @@ function buildSchema() {
 //     "study only" tag instead of chips.
 //   - Mark solved chips (solved.has(problem.id)) with the .solved class.
 function buildNav() {
+  const openModId = current ? findModuleIdForProblem(current.id) : firstPracticeableModuleId();
+
   const parts = [];
   CURRICULUM.forEach(mod => {
-    parts.push(`<h2>${esc(mod.module)}</h2>`);
+    const openAttr = mod.id === openModId ? ' open' : '';
+    parts.push(`<details class="modsec"${openAttr}><summary>${esc(mod.module)}</summary>`);
+
     if (mod.engine === 'tsql' || mod.engine === 'concept') {
       parts.push(`<div class="hint">${esc(mod.note || 'Materi teori — tidak ada soal interaktif di app ini.')}</div>`);
-      return;
+    } else {
+      const probs = PROBLEM_BANK[mod.id] || [];
+      if (!probs.length) {
+        parts.push(`<div class="hint">Belum ada soal untuk modul ini.</div>`);
+      } else {
+        // group chips by topic (sub-bab), in the order topics are listed in curriculum.js
+        const byTopic = {};
+        probs.forEach((p, i) => (byTopic[p.topic] = byTopic[p.topic] || []).push({ p, num: i + 1 }));
+        const topicOrder = (mod.topics && mod.topics.length) ? mod.topics : Object.keys(byTopic);
+        topicOrder.filter(t => byTopic[t]).forEach(topic => {
+          const chips = byTopic[topic].map(({ p, num }) => {
+            const cls = 'chip' + (solved.has(p.id) ? ' solved' : '');
+            return `<span class="${cls}" data-id="${esc(p.id)}">Q${num}</span>`;
+          }).join('');
+          parts.push(`<div class="subtopic">${esc(topic)}</div><div class="chips">${chips}</div>`);
+        });
+      }
     }
-    const probs = PROBLEM_BANK[mod.id] || [];
-    if (!probs.length) {
-      parts.push(`<div class="hint">Belum ada soal untuk modul ini.</div>`);
-      return;
-    }
-    const chips = probs.map((p, i) => {
-      const cls = 'chip' + (solved.has(p.id) ? ' solved' : '');
-      return `<span class="${cls}" data-id="${esc(p.id)}">Q${i + 1}</span>`;
-    }).join('');
-    parts.push(`<div class="chips">${chips}</div>`);
+    parts.push('</details>');
   });
   $('nav').innerHTML = parts.join('');
+
+  // accordion: opening one module (bab) closes the others
+  const sections = $('nav').querySelectorAll('details.modsec');
+  sections.forEach(sec => {
+    sec.addEventListener('toggle', () => {
+      if (sec.open) sections.forEach(other => { if (other !== sec) other.open = false; });
+    });
+  });
+
   $('nav').querySelectorAll('.chip').forEach(chip => {
     chip.onclick = () => {
       const problem = findProblemById(chip.dataset.id);
@@ -104,6 +124,22 @@ function findProblemById(id) {
     const probs = PROBLEM_BANK[mod.id] || [];
     const p = probs.find(x => x.id === id);
     if (p) return p;
+  }
+  return null;
+}
+
+function findModuleIdForProblem(problemId) {
+  for (const mod of CURRICULUM) {
+    const probs = PROBLEM_BANK[mod.id] || [];
+    if (probs.some(p => p.id === problemId)) return mod.id;
+  }
+  return null;
+}
+
+function firstPracticeableModuleId() {
+  for (const mod of CURRICULUM) {
+    const probs = PROBLEM_BANK[mod.id];
+    if (probs && probs.length) return mod.id;
   }
   return null;
 }
