@@ -124,7 +124,10 @@ function buildRail() {
     btn.onclick = () => {
       $('sidebar').classList.add('open');
       const sec = $('nav').querySelector(`details[data-modid="${btn.dataset.modid}"]`);
-      if (sec) sec.open = true;
+      if (sec) {
+        sec.open = true;
+        sec.scrollIntoView({ block: 'start' });
+      }
     };
   });
 }
