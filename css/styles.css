@@ -11,12 +11,12 @@
       radial-gradient(1200px 500px at 85% -10%, rgba(242,179,56,.07), transparent 60%),
       var(--ink);
     color:var(--txt); font-family:var(--body); line-height:1.5;
-    -webkit-font-smoothing:antialiased; padding:22px 40px; min-height:100vh;}
+    -webkit-font-smoothing:antialiased; padding:16px 40px; min-height:100vh;}
   a{color:var(--gold)}
   .wrap{max-width:min(1680px, 90vw); margin:0 auto; position:relative;}
 
   /* ---------- auth bar: sibling of .badge (not nested) so its dropdown can't get clipped by badge's overflow:hidden ---------- */
-  .authbar{position:absolute; top:6px; right:6px; display:flex; align-items:center; justify-content:flex-end; gap:8px; flex-wrap:wrap; z-index:20;}
+  .authbar{position:absolute; top:16px; right:14px; display:flex; align-items:center; justify-content:flex-end; gap:8px; flex-wrap:wrap; z-index:20;}
   .authinput{font-family:var(--body); font-size:12.5px; padding:7px 10px; border-radius:8px; border:1px solid var(--line);
     background:#171a26; color:var(--txt); outline:none; width:150px;}
   .authinput:focus{border-color:var(--gold);}
@@ -32,7 +32,7 @@
 
   /* ---------- badge header (signature) ---------- */
   .badge{position:relative; background:linear-gradient(150deg,#232a42 0%, #1b2033 60%, #181c2b 100%);
-    border:1px solid var(--line); border-radius:var(--r); padding:12px 24px 12px 22px;
+    border:1px solid var(--line); border-radius:var(--r); padding:8px 24px 8px 22px;
     overflow:hidden; box-shadow:0 20px 40px -24px rgba(0,0,0,.7);}
   .badge:before{content:""; position:absolute; left:0; top:0; bottom:0; width:6px;
     background:linear-gradient(var(--gold),#e08b2a);}
@@ -55,7 +55,7 @@
 
   /* Materi: hidden (width 0) by default, opens to full nav via toggle button.
      Main column reflows to fill the rest either way — never overlaps. */
-  .layout{display:flex; align-items:flex-start; gap:0; margin-top:18px;}
+  .layout{display:flex; align-items:flex-start; gap:0; margin-top:10px;}
   .sidebar{width:0; flex-shrink:0; transition:width .22s ease; overflow:hidden; position:sticky; top:12px;}
   .sidebar.open{width:340px; margin-right:18px;}
   .fullnav{width:340px; max-height:calc(100vh - 24px); overflow-y:auto;}
@@ -63,7 +63,7 @@
   #navToggleBtn{margin-bottom:14px; display:flex; align-items:center; font-size:15px; padding:0 22px;}
 
   .card{background:var(--panel); border:1px solid var(--line); border-radius:var(--r); }
-  .pad{padding:14px 20px;}
+  .pad{padding:10px 20px;}
   .card h2{font-family:var(--disp); font-size:13px; letter-spacing:.05em; text-transform:uppercase; color:var(--dim); margin:0 0 8px;}
 
   #nav{margin-bottom:14px;}
@@ -74,13 +74,16 @@
   .subtopic{font-family:var(--mono); font-size:11px; color:var(--faint); margin:10px 0 6px;}
 
   /* problem chips */
-  .chips{display:flex; flex-wrap:wrap; gap:7px; margin-bottom:14px;}
-  .chip{font-family:var(--mono); font-size:12.5px; padding:6px 11px; border-radius:8px; border:1px solid var(--line);
-    background:#171a26; color:var(--dim); cursor:pointer; transition:.14s; user-select:none;}
+  .chips{display:flex; flex-direction:column; gap:6px; margin-bottom:14px;}
+  .chip{display:flex; align-items:center; gap:9px; text-align:left; font-family:var(--mono); font-size:12px;
+    padding:7px 11px; border-radius:8px; border:1px solid var(--line);
+    background:#171a26; color:var(--dim); cursor:pointer; transition:.14s; user-select:none; white-space:normal;}
   .chip:hover{border-color:#495177; color:var(--txt)}
   .chip.active{background:var(--panel2); color:var(--txt); border-color:var(--gold);}
-  .chip.solved{color:var(--pass);}
-  .chip.solved:before{content:"✓ ";}
+  .chip.solved{color:var(--pass); border-color:rgba(55,208,138,.35);}
+  .chip:before{content:""; flex-shrink:0; width:16px; height:16px; border-radius:50%; border:1.5px solid var(--line);}
+  .chip.solved:before{content:"✓"; display:flex; align-items:center; justify-content:center;
+    background:var(--pass); border-color:var(--pass); color:#0e1017; font-size:10px; font-weight:700;}
 
   .ptitle{font-family:var(--disp); font-size:20px; font-weight:600; margin:2px 0 4px;}
   .level{display:inline-block; font-family:var(--mono); font-size:10.5px; letter-spacing:.14em; text-transform:uppercase;
@@ -91,7 +94,7 @@
   .task{font-size:14.5px; color:#d7dae6;}
   .task code{font-family:var(--mono); font-size:12.5px; background:#12141d; padding:2px 6px; border-radius:5px; color:#ffd479; border:1px solid var(--line);}
   .task b{color:#fff}
-  details{margin-top:14px; border-top:1px dashed var(--line); padding-top:12px;}
+  details{margin-top:8px; border-top:1px dashed var(--line); padding-top:8px;}
   summary{cursor:pointer; font-family:var(--mono); font-size:12px; color:var(--dim); list-style:none;}
   summary::-webkit-details-marker{display:none}
   summary:before{content:"▸ "; color:var(--gold)}
@@ -129,7 +132,7 @@
   button.run{background:linear-gradient(var(--gold),#e08b2a); color:#20160a; border:none; box-shadow:0 6px 18px -8px var(--gold)}
   button.run:hover{filter:brightness(1.06)}
   button.act.small{padding:7px 11px; font-size:12px; font-family:var(--mono)}
-  textarea#ed{width:100%; height:210px; resize:vertical; background:#0f1119; color:#eaf0ff; border:1px solid var(--line);
+  textarea#ed{width:100%; height:110px; resize:vertical; background:#0f1119; color:#eaf0ff; border:1px solid var(--line);
     border-radius:10px; padding:14px 15px; font-family:var(--mono); font-size:13.5px; line-height:1.6; outline:none; tab-size:2;}
   textarea#ed:focus{border-color:var(--gold); box-shadow:0 0 0 3px rgba(242,179,56,.12)}
   .kbd{font-family:var(--mono); font-size:11px; color:var(--faint)}

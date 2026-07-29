@@ -97,7 +97,7 @@ function buildNav() {
             qnum++;
             displayNum[p.id] = qnum;
             const cls = 'chip' + (solved.has(p.id) ? ' solved' : '');
-            return `<span class="${cls}" data-id="${esc(p.id)}">Q${qnum}</span>`;
+            return `<span class="${cls}" data-id="${esc(p.id)}">Q${qnum} — ${esc(p.title)}</span>`;
           }).join('');
           parts.push(`<div class="subtopic">${esc(topic)}</div><div class="chips">${chips}</div>`);
         });
@@ -146,6 +146,28 @@ function firstPracticeableModuleId() {
     if (probs && probs.length) return mod.id;
   }
   return null;
+}
+
+// --- "next problem" — same order as the nav (module -> topic -> problem) ----
+function getOrderedProblems() {
+  const list = [];
+  CURRICULUM.forEach(mod => {
+    const probs = PROBLEM_BANK[mod.id] || [];
+    if (!probs.length) return;
+    const byTopic = {};
+    probs.forEach(p => (byTopic[p.topic] = byTopic[p.topic] || []).push(p));
+    const topicOrder = (mod.topics && mod.topics.length) ? mod.topics : Object.keys(byTopic);
+    topicOrder.filter(t => byTopic[t]).forEach(topic => byTopic[topic].forEach(p => list.push(p)));
+  });
+  return list;
+}
+
+function goToNextProblem() {
+  if (!current) return;
+  const list = getOrderedProblems();
+  const idx = list.findIndex(p => p.id === current.id);
+  if (idx === -1) return;
+  selectProblem(list[(idx + 1) % list.length]);
 }
 
 // --- select & display a problem ---------------------------------------------
@@ -335,6 +357,7 @@ window.addEventListener('DOMContentLoaded', () => {
     $('keyq').style.display = $('keyq').style.display === 'none' ? 'block' : 'none';
   });
   $('schemaBtn') && ($('schemaBtn').onclick = () => $('schemaModal').style.display = 'flex');
+  $('nextBtn') && ($('nextBtn').onclick = goToNextProblem);
   $('schemaCloseBtn') && ($('schemaCloseBtn').onclick = () => $('schemaModal').style.display = 'none');
   $('schemaModal') && $('schemaModal').addEventListener('click', (e) => {
     if (e.target === $('schemaModal')) $('schemaModal').style.display = 'none';
