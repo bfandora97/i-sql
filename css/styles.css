@@ -15,8 +15,8 @@
   a{color:var(--gold)}
   .wrap{max-width:min(1680px, 90vw); margin:0 auto;}
 
-  /* ---------- auth bar ---------- */
-  .authbar{display:flex; align-items:center; justify-content:flex-end; gap:8px; margin-bottom:10px; flex-wrap:wrap;}
+  /* ---------- auth bar (sits in the badge header's top-right corner) ---------- */
+  .authbar{position:absolute; top:12px; right:24px; display:flex; align-items:center; justify-content:flex-end; gap:8px; flex-wrap:wrap; z-index:2;}
   .authinput{font-family:var(--body); font-size:12.5px; padding:7px 10px; border-radius:8px; border:1px solid var(--line);
     background:#171a26; color:var(--txt); outline:none; width:150px;}
   .authinput:focus{border-color:var(--gold);}
@@ -35,7 +35,7 @@
     color:var(--gold); margin:0 0 6px 16px;}
   .badge h1{font-family:var(--disp); font-weight:700; font-size:26px; margin:0 0 2px 16px; letter-spacing:-.01em;}
   .badge .sub{margin:0 0 0 16px; color:var(--dim); font-size:13.5px;}
-  .stamps{position:absolute; right:24px; top:20px; text-align:right;}
+  .stamps{position:absolute; right:24px; top:46px; text-align:right;}
   .stamps .n{font-family:var(--disp); font-size:30px; font-weight:700; line-height:1;}
   .stamps .n .ntot{font-size:15px; font-weight:500; color:var(--dim);}
   .stamps .lbl{font-family:var(--mono); font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--dim);}
