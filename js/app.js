@@ -131,6 +131,8 @@ function selectProblem(problem) {
   $('nav').querySelectorAll('.chip').forEach(chip => {
     chip.classList.toggle('active', chip.dataset.id === problem.id);
   });
+
+  $('ptitle').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 // --- run the editor query and grade it --------------------------------------
