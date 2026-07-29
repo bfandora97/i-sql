@@ -29,10 +29,20 @@
       🔒 Silakan <b>masuk</b> atau <b>daftar</b> dulu (form di pojok kanan atas) untuk mengakses SQL Practice Console ini.
     </div>
 
+    <!-- Materi button + progress stat: shared header above both columns -->
+    <div class="materibar" id="materibar" style="display:none">
+      <button id="navToggleBtn" class="act small">☰ Materi</button>
+      <div class="stamps">
+        <div class="n"><span id="solvedN">0</span><span class="ntot">/<span id="totalN">0</span></span></div>
+        <div class="lbl">Soal Lolos</div>
+        <div class="progressbar"><div class="fill" id="fill"></div></div>
+      </div>
+    </div>
+
     <!-- app (hidden until db ready): push-sidebar, content reflows dynamically, nothing overlaps -->
     <div class="layout" id="app" style="display:none">
 
-      <!-- Materi: hidden by default, opens via the toggle button. Pushes content, never overlaps. -->
+      <!-- Materi: hidden by default, opens via the toggle button. Matches the question card's height (JS). -->
       <aside class="sidebar" id="sidebar">
         <div class="card pad fullnav">
           <h2>Materi</h2>
@@ -42,14 +52,6 @@
       </aside>
 
       <div class="maincol">
-        <div class="materibar">
-          <button id="navToggleBtn" class="act small">☰ Materi</button>
-          <div class="stamps">
-            <div class="n"><span id="solvedN">0</span><span class="ntot">/<span id="totalN">0</span></span></div>
-            <div class="lbl">Soal Lolos</div>
-            <div class="progressbar"><div class="fill" id="fill"></div></div>
-          </div>
-        </div>
         <div class="card pad">
           <span class="level" id="lvl"></span>
           <div class="ptitle" id="ptitle">Pilih soal untuk mulai</div>

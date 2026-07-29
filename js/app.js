@@ -37,7 +37,12 @@ async function boot() {
       db.run(DATA_SQL);
       $('loader').style.display = 'none';
       $('app').style.display = 'flex';
-      $('navToggleBtn').onclick = () => $('sidebar').classList.toggle('open');
+      $('materibar').style.display = 'flex';
+      $('navToggleBtn').onclick = () => {
+        $('sidebar').classList.toggle('open');
+        syncSidebarHeight();
+      };
+      window.addEventListener('resize', syncSidebarHeight);
       buildSchema();
       buildNav();
       refreshProgress();
@@ -195,6 +200,15 @@ function selectProblem(problem) {
   });
 
   $('ptitle').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  syncSidebarHeight();
+}
+
+// --- Materi sidebar always matches the question card's height, so both
+//     columns line up instead of the sidebar running its own (viewport) height.
+function syncSidebarHeight() {
+  const card = document.querySelector('.maincol .card');
+  const fullnav = document.querySelector('.fullnav');
+  if (card && fullnav) fullnav.style.maxHeight = card.getBoundingClientRect().height + 'px';
 }
 
 // --- run the editor query and grade it --------------------------------------
@@ -233,6 +247,7 @@ function runQuery() {
     refreshProgress();
   }
   showVerdict(verdict.ok ? 'ok' : 'no', verdict.msg);
+  syncSidebarHeight();
 }
 
 // --- helpers: shape a db.exec() result into {cols, rows} (done) --------------
