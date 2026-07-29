@@ -36,6 +36,8 @@ async function boot() {
       db.run(DATA_SQL);
       $('loader').style.display = 'none';
       $('app').style.display = 'grid';
+      $('navToggleBtn').style.display = 'inline-block';
+      $('navToggleBtn').onclick = () => $('app').classList.toggle('navcollapsed');
       buildSchema();
       buildNav();
       refreshProgress();
