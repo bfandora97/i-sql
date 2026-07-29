@@ -27,24 +27,6 @@
       </div>
     </div>
 
-    <!-- Materi: floating dropdown anchored top-left, not a grid column -->
-    <div class="navwrap">
-      <button id="navToggleBtn" class="act small" style="display:none">☰ Materi</button>
-      <div class="navpanel" id="navpanel">
-        <h2>Materi</h2>
-        <!-- buildNav() renders module sections + problem chips here -->
-        <div id="nav"></div>
-
-        <div class="schema">
-          <h2 style="margin-top:20px">Skema: <span style="color:#ffd479;font-family:var(--mono)">registrations</span> (30 baris) · <span style="color:#ffd479;font-family:var(--mono)">exhibitors</span> (12 baris)</h2>
-          <table class="sch">
-            <thead><tr><th>Tabel</th><th>Kolom</th><th>Tipe</th><th>Keterangan</th></tr></thead>
-            <tbody id="schBody"></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
     <!-- loading state -->
     <div id="loader" class="card pad loader"><span class="spin"></span>Memuat mesin SQLite…</div>
 
@@ -53,35 +35,56 @@
       🔒 Silakan <b>masuk</b> atau <b>daftar</b> dulu (form di pojok kanan atas) untuk mengakses SQL Practice Console ini.
     </div>
 
-    <!-- app (hidden until db ready): just the question+editor, full width -->
-    <div class="grid" id="app" style="display:none">
-      <div class="card pad">
-        <span class="level" id="lvl"></span>
-        <div class="ptitle" id="ptitle">Pilih soal untuk mulai</div>
-        <div class="task" id="task"></div>
+    <!-- app (hidden until db ready): push-sidebar, content reflows dynamically, nothing overlaps -->
+    <div class="layout" id="app" style="display:none">
 
-        <details id="hintBox">
-          <summary>Petunjuk &amp; kunci</summary>
-          <div class="hint" id="hint"></div>
-          <button class="act small" style="margin-top:10px" id="revealBtn">Lihat kunci jawaban</button>
-          <div class="keyq" id="keyq" style="display:none"></div>
-        </details>
+      <!-- Materi: width-animates open/closed, main column reflows to fill the rest -->
+      <aside class="sidebar" id="sidebar">
+        <div class="card pad">
+          <h2>Materi</h2>
+          <!-- buildNav() renders module sections + problem chips here -->
+          <div id="nav"></div>
 
-        <h2 style="margin-top:20px">Editor</h2>
-        <div class="tools">
-          <button class="act run" id="runBtn">▶ Run &amp; Cek</button>
-          <button class="act small" id="peekBtn">Intip data</button>
-          <button class="act small" id="clearBtn">Bersihkan</button>
-          <span class="spacer"></span>
-          <span class="kbd">Ctrl/⌘ + Enter</span>
+          <div class="schema">
+            <h2 style="margin-top:20px">Skema: <span style="color:#ffd479;font-family:var(--mono)">registrations</span> (30 baris) · <span style="color:#ffd479;font-family:var(--mono)">exhibitors</span> (12 baris)</h2>
+            <table class="sch">
+              <thead><tr><th>Tabel</th><th>Kolom</th><th>Tipe</th><th>Keterangan</th></tr></thead>
+              <tbody id="schBody"></tbody>
+            </table>
+          </div>
         </div>
-        <textarea id="ed" spellcheck="false" placeholder="SELECT ... FROM registrations WHERE ...;"></textarea>
+      </aside>
 
-        <div class="verdict" id="verdict"><span class="ico" id="vico"></span><div id="vtxt"></div></div>
+      <div class="maincol">
+        <button id="navToggleBtn" class="act small">☰ Materi</button>
+        <div class="card pad">
+          <span class="level" id="lvl"></span>
+          <div class="ptitle" id="ptitle">Pilih soal untuk mulai</div>
+          <div class="task" id="task"></div>
 
-        <div class="resultwrap" id="resultwrap" style="display:none">
-          <div class="meta" id="resmeta"></div>
-          <div class="tbl"><table class="res" id="res"></table></div>
+          <details id="hintBox">
+            <summary>Petunjuk &amp; kunci</summary>
+            <div class="hint" id="hint"></div>
+            <button class="act small" style="margin-top:10px" id="revealBtn">Lihat kunci jawaban</button>
+            <div class="keyq" id="keyq" style="display:none"></div>
+          </details>
+
+          <h2 style="margin-top:20px">Editor</h2>
+          <div class="tools">
+            <button class="act run" id="runBtn">▶ Run &amp; Cek</button>
+            <button class="act small" id="peekBtn">Intip data</button>
+            <button class="act small" id="clearBtn">Bersihkan</button>
+            <span class="spacer"></span>
+            <span class="kbd">Ctrl/⌘ + Enter</span>
+          </div>
+          <textarea id="ed" spellcheck="false" placeholder="SELECT ... FROM registrations WHERE ...;"></textarea>
+
+          <div class="verdict" id="verdict"><span class="ico" id="vico"></span><div id="vtxt"></div></div>
+
+          <div class="resultwrap" id="resultwrap" style="display:none">
+            <div class="meta" id="resmeta"></div>
+            <div class="tbl"><table class="res" id="res"></table></div>
+          </div>
         </div>
       </div>
     </div>
