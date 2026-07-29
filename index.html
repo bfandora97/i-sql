@@ -33,12 +33,23 @@
     <!-- app (hidden until db ready) -->
     <div class="grid" id="app" style="display:none">
 
-      <!-- LEFT: curriculum nav + current problem + schema -->
+      <!-- LEFT: curriculum nav + schema -->
       <div class="card pad">
         <h2>Materi</h2>
         <!-- buildNav() renders module sections + problem chips here -->
         <div id="nav"></div>
 
+        <div class="schema">
+          <h2 style="margin-top:20px">Skema: <span style="color:#ffd479;font-family:var(--mono)">registrations</span> (30 baris) · <span style="color:#ffd479;font-family:var(--mono)">exhibitors</span> (12 baris)</h2>
+          <table class="sch">
+            <thead><tr><th>Tabel</th><th>Kolom</th><th>Tipe</th><th>Keterangan</th></tr></thead>
+            <tbody id="schBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- RIGHT: current problem, then editor + verdict + result -->
+      <div class="card pad">
         <span class="level" id="lvl"></span>
         <div class="ptitle" id="ptitle">Pilih soal untuk mulai</div>
         <div class="task" id="task"></div>
@@ -50,18 +61,7 @@
           <div class="keyq" id="keyq" style="display:none"></div>
         </details>
 
-        <div class="schema">
-          <h2 style="margin-top:20px">Skema: <span style="color:#ffd479;font-family:var(--mono)">registrations</span> (30 baris) · <span style="color:#ffd479;font-family:var(--mono)">exhibitors</span> (12 baris)</h2>
-          <table class="sch">
-            <thead><tr><th>Tabel</th><th>Kolom</th><th>Tipe</th><th>Keterangan</th></tr></thead>
-            <tbody id="schBody"></tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- RIGHT: editor + verdict + result -->
-      <div class="card pad">
-        <h2>Editor</h2>
+        <h2 style="margin-top:20px">Editor</h2>
         <div class="tools">
           <button class="act run" id="runBtn">▶ Run &amp; Cek</button>
           <button class="act small" id="peekBtn">Intip data</button>
