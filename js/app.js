@@ -347,6 +347,14 @@ window.addEventListener('DOMContentLoaded', () => {
   $('revealBtn') && ($('revealBtn').onclick = () => {
     $('keyq').style.display = $('keyq').style.display === 'none' ? 'block' : 'none';
   });
+  $('schemaBtn') && ($('schemaBtn').onclick = () => $('schemaModal').style.display = 'flex');
+  $('schemaCloseBtn') && ($('schemaCloseBtn').onclick = () => $('schemaModal').style.display = 'none');
+  $('schemaModal') && $('schemaModal').addEventListener('click', (e) => {
+    if (e.target === $('schemaModal')) $('schemaModal').style.display = 'none';
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && $('schemaModal').style.display !== 'none') $('schemaModal').style.display = 'none';
+  });
   const ed = $('ed');
   if (ed) ed.addEventListener('keydown', e => {
     if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') { e.preventDefault(); runQuery(); }

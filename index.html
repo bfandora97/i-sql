@@ -47,14 +47,6 @@
           <h2>Materi</h2>
           <!-- buildNav() renders module sections + problem chips here -->
           <div id="nav"></div>
-
-          <div class="schema">
-            <h2 style="margin-top:20px">Skema: <span style="color:#ffd479;font-family:var(--mono)">registrations</span> (30 baris) · <span style="color:#ffd479;font-family:var(--mono)">exhibitors</span> (12 baris)</h2>
-            <table class="sch">
-              <thead><tr><th>Tabel</th><th>Kolom</th><th>Tipe</th><th>Keterangan</th></tr></thead>
-              <tbody id="schBody"></tbody>
-            </table>
-          </div>
         </div>
       </aside>
 
@@ -77,6 +69,7 @@
             <button class="act run" id="runBtn">▶ Run &amp; Cek</button>
             <button class="act small" id="peekBtn">Intip data</button>
             <button class="act small" id="clearBtn">Bersihkan</button>
+            <button class="act small" id="schemaBtn">📋 Skema Tabel</button>
             <span class="spacer"></span>
             <span class="kbd">Ctrl/⌘ + Enter</span>
           </div>
@@ -95,6 +88,20 @@
     <div class="foot">
       Mesin: SQLite (in-browser) · batasi baris pakai <b>LIMIT</b> · di SQL Server pakai <b>SELECT TOP n</b>
       &nbsp;·&nbsp; <a class="reset" id="resetBtn">Reset progress</a>
+    </div>
+  </div>
+
+  <!-- schema popup, opened via the "Skema Tabel" button -->
+  <div class="modal-overlay" id="schemaModal" style="display:none">
+    <div class="modal-box">
+      <button class="modal-close" id="schemaCloseBtn">✕</button>
+      <h2>Skema: <span style="color:#ffd479;font-family:var(--mono)">registrations</span> (30 baris) · <span style="color:#ffd479;font-family:var(--mono)">exhibitors</span> (12 baris)</h2>
+      <div style="overflow-x:auto">
+        <table class="sch">
+          <thead><tr><th>Tabel</th><th>Kolom</th><th>Tipe</th><th>Keterangan</th></tr></thead>
+          <tbody id="schBody"></tbody>
+        </table>
+      </div>
     </div>
   </div>
 
