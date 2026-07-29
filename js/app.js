@@ -12,26 +12,49 @@ const esc = (s) => String(s).replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>'
 
 let db = null;
 let current = null;                 // current problem object
-const solved = loadProgress();      // Set of solved problem ids (persisted)
+let solved = new Set();             // Set of solved problem ids (persisted)
 
 // --- boot -------------------------------------------------------------------
-initSqlJs({ locateFile: f => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/${f}` })
-  .then(SQL => {
-    db = new SQL.Database();
-    db.run(DATA_SQL);
-    $('loader').style.display = 'none';
-    $('app').style.display = 'grid';
-    buildSchema();
+// Auth (Supabase, if reachable) resolves first so `solved` reflects the
+// signed-in user's cloud progress before the nav renders; login is optional
+// though — loadProgress() falls back to localStorage as a guest.
+function handleAuthChange() {
+  loadProgress().then(newSolved => {
+    solved = newSolved;
     buildNav();
-    refreshProgress();
-    for (const mod of CURRICULUM) {
-      const probs = PROBLEM_BANK[mod.id];
-      if (probs && probs.length) { selectProblem(probs[0]); break; }
+    if (current) {
+      $('nav').querySelectorAll('.chip').forEach(chip => {
+        chip.classList.toggle('active', chip.dataset.id === current.id);
+      });
     }
-  })
-  .catch(err => {
-    $('loader').innerHTML = '⚠ Gagal memuat mesin SQL. Cek koneksi lalu muat ulang.<br><small>' + esc(String(err)) + '</small>';
+    refreshProgress();
   });
+}
+window.onAuthChange = handleAuthChange;
+
+async function boot() {
+  try { await initAuth(); } catch {}
+  solved = await loadProgress();
+
+  initSqlJs({ locateFile: f => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/${f}` })
+    .then(SQL => {
+      db = new SQL.Database();
+      db.run(DATA_SQL);
+      $('loader').style.display = 'none';
+      $('app').style.display = 'grid';
+      buildSchema();
+      buildNav();
+      refreshProgress();
+      for (const mod of CURRICULUM) {
+        const probs = PROBLEM_BANK[mod.id];
+        if (probs && probs.length) { selectProblem(probs[0]); break; }
+      }
+    })
+    .catch(err => {
+      $('loader').innerHTML = '⚠ Gagal memuat mesin SQL. Cek koneksi lalu muat ulang.<br><small>' + esc(String(err)) + '</small>';
+    });
+}
+boot();
 
 // --- schema panel (done) ----------------------------------------------------
 function buildSchema() {
@@ -142,7 +165,7 @@ function runQuery() {
   const verdict = judge(userGrid, solGrid, current.ordered);
   if (verdict.ok) {
     solved.add(current.id);
-    saveProgress();
+    saveProgress(current.id);
     refreshProgress();
   }
   showVerdict(verdict.ok ? 'ok' : 'no', verdict.msg);
@@ -199,17 +222,55 @@ function showVerdict(kind, html) {
   $('vtxt').innerHTML = html;
 }
 
-// --- progress persistence (done — localStorage, safe fallback) --------------
-function loadProgress() {
+// --- progress persistence: Supabase (signed in) with localStorage fallback --
+function loadLocalProgress() {
   try { return new Set(JSON.parse(localStorage.getItem('sqp_solved') || '[]')); }
   catch { return new Set(); }
 }
-function saveProgress() {
+function saveLocalProgress() {
   try { localStorage.setItem('sqp_solved', JSON.stringify([...solved])); } catch {}
 }
-function resetProgress() {
-  solved.clear(); saveProgress(); refreshProgress();
+
+// Guests get localStorage. Signed-in users get their cloud progress, merged
+// with any local guest progress made before logging in (uploaded once here).
+async function loadProgress() {
+  const local = loadLocalProgress();
+  if (!currentUser) return local;
+  try {
+    const { data, error } = await supabaseClient
+      .from('solved_problems')
+      .select('problem_id')
+      .eq('user_id', currentUser.id);
+    if (error) throw error;
+    const cloud = new Set(data.map(r => r.problem_id));
+    const localOnly = [...local].filter(id => !cloud.has(id));
+    if (localOnly.length) {
+      await supabaseClient.from('solved_problems')
+        .upsert(localOnly.map(problem_id => ({ user_id: currentUser.id, problem_id })));
+      localOnly.forEach(id => cloud.add(id));
+    }
+    return cloud;
+  } catch {
+    return local; // Supabase unreachable — keep working offline
+  }
+}
+
+async function saveProgress(problemId) {
+  saveLocalProgress();
+  if (!currentUser) return;
+  try {
+    await supabaseClient.from('solved_problems').upsert({ user_id: currentUser.id, problem_id: problemId });
+  } catch {}
+}
+
+async function resetProgress() {
+  solved.clear();
+  saveLocalProgress();
+  refreshProgress();
   $('nav').querySelectorAll('.chip.solved').forEach(chip => chip.classList.remove('solved'));
+  if (currentUser) {
+    try { await supabaseClient.from('solved_problems').delete().eq('user_id', currentUser.id); } catch {}
+  }
 }
 function refreshProgress() {
   $('solvedN').textContent = solved.size;
