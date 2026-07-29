@@ -43,12 +43,16 @@
   .progressbar .fill{height:100%; width:0%; background:linear-gradient(90deg,var(--gold),#e08b2a); transition:width .3s;}
 
   /* ---------- layout ---------- */
-  .grid{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.05fr); gap:18px; margin-top:18px;}
-  @media(max-width:840px){ .grid{grid-template-columns:1fr} body{padding:14px} .stamps{position:static; text-align:left; margin-top:12px} .strip{justify-content:flex-start} }
-  @media(min-width:841px){ .grid>.card:first-child{position:sticky; top:12px; align-self:start; max-height:calc(100vh - 24px); overflow-y:auto;} }
-  .navtoggle{margin:14px 0 -4px;}
-  .grid.navcollapsed>.card:first-child{display:none;}
-  .grid.navcollapsed>.card:last-child{grid-column:1/-1;}
+  .grid{display:grid; grid-template-columns:1fr; gap:18px; margin-top:18px;}
+  @media(max-width:840px){ body{padding:14px} .stamps{position:static; text-align:left; margin-top:12px} }
+
+  /* Materi: floating dropdown anchored top-left, doesn't affect page layout */
+  .navwrap{position:relative; display:inline-block; margin:14px 0 4px;}
+  .navpanel{display:none; position:absolute; top:calc(100% + 6px); left:0; width:380px; max-width:90vw;
+    max-height:75vh; overflow-y:auto; background:var(--panel); border:1px solid var(--line); border-radius:var(--r);
+    box-shadow:0 24px 48px -16px rgba(0,0,0,.7); z-index:30; padding:16px 18px;}
+  .navpanel.open{display:block;}
+
   .card{background:var(--panel); border:1px solid var(--line); border-radius:var(--r); }
   .pad{padding:18px 20px;}
   .card h2{font-family:var(--disp); font-size:13px; letter-spacing:.05em; text-transform:uppercase; color:var(--dim); margin:0 0 12px;}

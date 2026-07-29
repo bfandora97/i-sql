@@ -37,7 +37,10 @@ async function boot() {
       $('loader').style.display = 'none';
       $('app').style.display = 'grid';
       $('navToggleBtn').style.display = 'inline-block';
-      $('navToggleBtn').onclick = () => $('app').classList.toggle('navcollapsed');
+      $('navToggleBtn').onclick = (e) => { e.stopPropagation(); $('navpanel').classList.toggle('open'); };
+      document.addEventListener('click', (e) => {
+        if (!$('navpanel').contains(e.target) && e.target !== $('navToggleBtn')) $('navpanel').classList.remove('open');
+      });
       buildSchema();
       buildNav();
       refreshProgress();
@@ -164,6 +167,7 @@ function selectProblem(problem) {
     chip.classList.toggle('active', chip.dataset.id === problem.id);
   });
 
+  $('navpanel').classList.remove('open');
   $('ptitle').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
