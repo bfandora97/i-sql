@@ -13,6 +13,7 @@ const esc = (s) => String(s).replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>'
 let db = null;
 let current = null;                 // current problem object
 let solved = new Set();             // Set of solved problem ids (persisted)
+let displayNum = {};                // problem.id -> Q-number shown in nav (topic display order)
 
 // --- boot -------------------------------------------------------------------
 // Login is required: the app only loads once a Supabase session exists.
@@ -84,12 +85,15 @@ function buildNav() {
       } else {
         // group chips by topic (sub-bab), in the order topics are listed in curriculum.js
         const byTopic = {};
-        probs.forEach((p, i) => (byTopic[p.topic] = byTopic[p.topic] || []).push({ p, num: i + 1 }));
+        probs.forEach(p => (byTopic[p.topic] = byTopic[p.topic] || []).push(p));
         const topicOrder = (mod.topics && mod.topics.length) ? mod.topics : Object.keys(byTopic);
+        let qnum = 0;
         topicOrder.filter(t => byTopic[t]).forEach(topic => {
-          const chips = byTopic[topic].map(({ p, num }) => {
+          const chips = byTopic[topic].map(p => {
+            qnum++;
+            displayNum[p.id] = qnum;
             const cls = 'chip' + (solved.has(p.id) ? ' solved' : '');
-            return `<span class="${cls}" data-id="${esc(p.id)}">Q${num}</span>`;
+            return `<span class="${cls}" data-id="${esc(p.id)}">Q${qnum}</span>`;
           }).join('');
           parts.push(`<div class="subtopic">${esc(topic)}</div><div class="chips">${chips}</div>`);
         });
@@ -165,7 +169,7 @@ function selectProblem(problem) {
 
   $('lvl').textContent = problem.level;
   $('lvl').className = 'level ' + problem.level;
-  const num = problem.id.split('-').pop().replace(/^0+/, '') || '0';
+  const num = displayNum[problem.id] || problem.id.split('-').pop().replace(/^0+/, '') || '0';
   $('ptitle').textContent = `Q${num} — ${problem.title}`;
   $('task').innerHTML = problem.task;
   $('hint').innerHTML = problem.hint;
