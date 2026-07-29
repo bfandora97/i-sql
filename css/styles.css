@@ -45,18 +45,12 @@
   /* ---------- layout ---------- */
   @media(max-width:840px){ body{padding:14px} .stamps{position:static; text-align:left; margin-top:12px} }
 
-  /* Materi: minimized = numbered rail (always visible), maximized = full nav.
+  /* Materi: hidden (width 0) by default, opens to full nav via toggle button.
      Main column reflows to fill the rest either way — never overlaps. */
-  .layout{display:flex; align-items:flex-start; gap:18px; margin-top:18px;}
-  .sidebar{width:56px; flex-shrink:0; transition:width .22s ease; overflow:hidden;}
-  .sidebar.open{width:340px;}
-  .rail{display:flex; flex-direction:column; gap:6px; width:56px;}
-  .sidebar.open .rail{display:none;}
-  .railnum{width:36px; height:36px; border-radius:8px; border:1px solid var(--line); background:#171a26;
-    color:var(--dim); font-family:var(--mono); font-size:12px; cursor:pointer; transition:.14s;}
-  .railnum:hover{border-color:var(--gold); color:var(--txt);}
-  .fullnav{display:none; width:340px; max-height:calc(100vh - 24px); overflow-y:auto;}
-  .sidebar.open .fullnav{display:block;}
+  .layout{display:flex; align-items:flex-start; gap:0; margin-top:18px;}
+  .sidebar{width:0; flex-shrink:0; transition:width .22s ease; overflow:hidden;}
+  .sidebar.open{width:340px; margin-right:18px;}
+  .fullnav{width:340px; max-height:calc(100vh - 24px); overflow-y:auto;}
   .maincol{flex:1; min-width:0;}
   #navToggleBtn{margin-bottom:14px;}
 

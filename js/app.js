@@ -39,7 +39,6 @@ async function boot() {
       $('app').style.display = 'flex';
       $('navToggleBtn').onclick = () => $('sidebar').classList.toggle('open');
       buildSchema();
-      buildRail();
       buildNav();
       refreshProgress();
       for (const mod of CURRICULUM) {
@@ -119,23 +118,6 @@ function buildNav() {
   });
 }
 
-// --- rail: minimized sidebar state — just numbered module buttons -----------
-function buildRail() {
-  $('rail').innerHTML = CURRICULUM.map((mod, i) =>
-    `<button class="railnum" data-modid="${esc(mod.id)}" title="${esc(mod.module)}">${i + 1}</button>`
-  ).join('');
-  $('rail').querySelectorAll('.railnum').forEach(btn => {
-    btn.onclick = () => {
-      $('sidebar').classList.add('open');
-      const sec = $('nav').querySelector(`details[data-modid="${btn.dataset.modid}"]`);
-      if (sec) {
-        sec.open = true;
-        sec.scrollIntoView({ block: 'start' });
-      }
-    };
-  });
-}
-
 function findProblemById(id) {
   for (const mod of CURRICULUM) {
     const probs = PROBLEM_BANK[mod.id] || [];
@@ -185,7 +167,7 @@ function selectProblem(problem) {
     chip.classList.toggle('active', chip.dataset.id === problem.id);
   });
 
-  $('ptitle').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  $('ptitle').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
 // --- run the editor query and grade it --------------------------------------
