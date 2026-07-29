@@ -57,8 +57,7 @@
   .pad{padding:18px 20px;}
   .card h2{font-family:var(--disp); font-size:13px; letter-spacing:.05em; text-transform:uppercase; color:var(--dim); margin:0 0 12px;}
 
-  /* nav: scrolls on its own so the current-problem panel below it stays reachable */
-  #nav{max-height:420px; overflow-y:auto; padding-right:6px; margin-bottom:14px;}
+  #nav{margin-bottom:14px;}
 
   /* module (bab) accordion in nav — reuses details/summary styling below */
   #nav details.modsec{margin-top:10px; padding-top:10px;}
@@ -92,7 +91,7 @@
   .keyq{font-family:var(--mono); font-size:12px; background:#12141d; border:1px solid var(--line); border-radius:8px; padding:10px 12px; margin-top:8px; color:#c6cbe0; white-space:pre-wrap; word-break:break-word;}
 
   /* schema */
-  .schema{margin-top:16px;}
+  .schema{margin-top:16px; overflow-x:auto;}
   table.sch{width:100%; border-collapse:collapse; font-size:12.5px}
   table.sch th{font-family:var(--mono); text-align:left; color:var(--dim); font-weight:500; padding:5px 8px; border-bottom:1px solid var(--line); font-size:11px; letter-spacing:.04em; text-transform:uppercase}
   table.sch td{padding:5px 8px; border-bottom:1px solid #23283a; color:#cfd3e6}
