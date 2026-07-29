@@ -37,10 +37,10 @@
   .badge .sub{margin:0 0 0 16px; color:var(--dim); font-size:13.5px;}
   .stamps{position:absolute; right:24px; top:20px; text-align:right;}
   .stamps .n{font-family:var(--disp); font-size:30px; font-weight:700; line-height:1;}
+  .stamps .n .ntot{font-size:15px; font-weight:500; color:var(--dim);}
   .stamps .lbl{font-family:var(--mono); font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--dim);}
-  .strip{display:flex; gap:5px; margin-top:10px; justify-content:flex-end; flex-wrap:wrap;}
-  .dot{width:14px; height:14px; border-radius:4px; border:1px solid var(--line); background:#171a26;}
-  .dot.on{background:var(--gold); border-color:var(--gold); box-shadow:0 0 10px -2px var(--gold);}
+  .progressbar{width:180px; height:7px; margin-top:10px; background:#171a26; border:1px solid var(--line); border-radius:5px; overflow:hidden;}
+  .progressbar .fill{height:100%; width:0%; background:linear-gradient(90deg,var(--gold),#e08b2a); transition:width .3s;}
 
   /* ---------- layout ---------- */
   .grid{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.05fr); gap:18px; margin-top:18px;}
