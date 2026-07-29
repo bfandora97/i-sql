@@ -12,16 +12,13 @@
 <body>
   <div class="wrap">
 
-    <!-- badge header (auth bar merged into its top-right corner) -->
+    <!-- auth bar: sibling of .badge (not nested) so its dropdown isn't clipped -->
+    <div class="authbar" id="authbar"></div>
+
+    <!-- badge header -->
     <div class="badge">
-      <div class="authbar" id="authbar"></div>
       <h1>SQL Practice Console</h1>
       <p class="sub">Latihan SQL bertahap, mengikuti kurikulum <b>SQL with Baraa</b>, di atas data pameran nyata.</p>
-      <div class="stamps">
-        <div class="n"><span id="solvedN">0</span><span class="ntot">/<span id="totalN">0</span></span></div>
-        <div class="lbl">Soal Lolos</div>
-        <div class="progressbar"><div class="fill" id="fill"></div></div>
-      </div>
     </div>
 
     <!-- loading state -->
@@ -45,7 +42,14 @@
       </aside>
 
       <div class="maincol">
-        <button id="navToggleBtn" class="act small">☰ Materi</button>
+        <div class="materibar">
+          <button id="navToggleBtn" class="act small">☰ Materi</button>
+          <div class="stamps">
+            <div class="n"><span id="solvedN">0</span><span class="ntot">/<span id="totalN">0</span></span></div>
+            <div class="lbl">Soal Lolos</div>
+            <div class="progressbar"><div class="fill" id="fill"></div></div>
+          </div>
+        </div>
         <div class="card pad">
           <span class="level" id="lvl"></span>
           <div class="ptitle" id="ptitle">Pilih soal untuk mulai</div>
