@@ -15,25 +15,19 @@ let current = null;                 // current problem object
 let solved = new Set();             // Set of solved problem ids (persisted)
 
 // --- boot -------------------------------------------------------------------
-// Auth (Supabase, if reachable) resolves first so `solved` reflects the
-// signed-in user's cloud progress before the nav renders; login is optional
-// though — loadProgress() falls back to localStorage as a guest.
-function handleAuthChange() {
-  loadProgress().then(newSolved => {
-    solved = newSolved;
-    buildNav();
-    if (current) {
-      $('nav').querySelectorAll('.chip').forEach(chip => {
-        chip.classList.toggle('active', chip.dataset.id === current.id);
-      });
-    }
-    refreshProgress();
-  });
-}
-window.onAuthChange = handleAuthChange;
+// Login is required: the app only loads once a Supabase session exists.
+// Any sign-in/sign-out reloads the page so the gate/app state is always correct.
+window.onAuthChange = () => location.reload();
 
 async function boot() {
   try { await initAuth(); } catch {}
+
+  if (!currentUser) {
+    $('loader').style.display = 'none';
+    $('authgate').style.display = 'block';
+    return;
+  }
+
   solved = await loadProgress();
 
   initSqlJs({ locateFile: f => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/${f}` })

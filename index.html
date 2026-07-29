@@ -30,6 +30,11 @@
     <!-- loading state -->
     <div id="loader" class="card pad loader"><span class="spin"></span>Memuat mesin SQLite…</div>
 
+    <!-- auth gate: shown instead of the app until signed in -->
+    <div id="authgate" class="card pad loader" style="display:none">
+      🔒 Silakan <b>masuk</b> atau <b>daftar</b> dulu (form di pojok kanan atas) untuk mengakses SQL Practice Console ini.
+    </div>
+
     <!-- app (hidden until db ready) -->
     <div class="grid" id="app" style="display:none">
 
