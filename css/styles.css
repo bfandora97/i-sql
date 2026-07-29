@@ -111,10 +111,15 @@
 
   /* schema */
   table.sch{width:100%; border-collapse:collapse; font-size:12.5px}
-  table.sch th{font-family:var(--mono); text-align:left; color:var(--dim); font-weight:500; padding:5px 8px; border-bottom:1px solid var(--line); font-size:11px; letter-spacing:.04em; text-transform:uppercase}
-  table.sch td{padding:5px 8px; border-bottom:1px solid #23283a; color:#cfd3e6}
+  table.sch th{font-family:var(--mono); text-align:left; color:var(--dim); font-weight:500; padding:8px 10px; border-bottom:2px solid var(--line); font-size:11px; letter-spacing:.04em; text-transform:uppercase}
+  table.sch td{padding:8px 10px; border-bottom:1px solid #23283a; color:#cfd3e6}
   table.sch td.col{font-family:var(--mono); color:#ffd479}
   table.sch td.ty{font-family:var(--mono); color:var(--dim)}
+  table.sch tbody tr:nth-child(even){background:rgba(255,255,255,.025)}
+  table.sch tr.tablestart td{border-top:2px solid var(--gold); padding-top:14px}
+  table.sch tr.tablestart:first-child td{border-top:none; padding-top:8px}
+  .tablepill{font-family:var(--mono); font-size:10.5px; font-weight:600; letter-spacing:.03em; color:#20160a;
+    background:linear-gradient(var(--gold),#e08b2a); padding:3px 9px; border-radius:20px; white-space:nowrap;}
 
   /* editor */
   .tools{display:flex; align-items:center; gap:8px; margin-bottom:10px; flex-wrap:wrap}

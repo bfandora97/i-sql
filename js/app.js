@@ -54,9 +54,14 @@ boot();
 
 // --- schema panel (done) ----------------------------------------------------
 function buildSchema() {
-  $('schBody').innerHTML = SCHEMA
-    .map(r => `<tr><td class="ty">${esc(r[0])}</td><td class="col">${r[1]}</td><td class="ty">${r[2]}</td><td>${esc(r[3])}</td></tr>`)
-    .join('');
+  let lastTable = null;
+  $('schBody').innerHTML = SCHEMA.map(r => {
+    const isNewTable = r[0] !== lastTable;
+    lastTable = r[0];
+    const cls = isNewTable ? ' class="tablestart"' : '';
+    const tableCell = isNewTable ? `<span class="tablepill">${esc(r[0])}</span>` : '';
+    return `<tr${cls}><td>${tableCell}</td><td class="col">${r[1]}</td><td class="ty">${r[2]}</td><td>${esc(r[3])}</td></tr>`;
+  }).join('');
 }
 
 // --- navigation from CURRICULUM ---------------------------------------------
