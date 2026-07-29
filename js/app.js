@@ -355,7 +355,6 @@ function refreshProgress() {
   const total = Object.values(PROBLEM_BANK).reduce((n, arr) => n + arr.length, 0);
   $('solvedN').textContent = solved.size;
   $('totalN').textContent = total;
-  $('fill').style.width = (total ? (solved.size / total * 100) : 0) + '%';
 
   $('nav').querySelectorAll('.chip').forEach(chip => {
     chip.classList.toggle('solved', solved.has(chip.dataset.id));
