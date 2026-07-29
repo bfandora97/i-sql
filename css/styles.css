@@ -56,8 +56,8 @@
   /* Materi: hidden (width 0) by default, opens to full nav via toggle button.
      Main column reflows to fill the rest either way — never overlaps. */
   .layout{display:flex; align-items:flex-start; gap:0; margin-top:10px;}
-  .sidebar{width:0; flex-shrink:0; transition:width .22s ease; overflow:hidden; position:sticky; top:12px;}
-  .sidebar.open{width:340px; margin-right:18px;}
+  .sidebar{width:0; max-height:0; flex-shrink:0; transition:width .22s ease; overflow:hidden; position:sticky; top:12px;}
+  .sidebar.open{width:340px; max-height:calc(100vh - 24px); margin-right:18px;}
   .fullnav{width:340px; max-height:calc(100vh - 24px); overflow-y:auto;}
   .maincol{flex:1; min-width:0;}
   #navToggleBtn{margin-bottom:14px; display:flex; align-items:center; font-size:15px; padding:0 22px;}
