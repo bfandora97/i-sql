@@ -11,9 +11,10 @@
       radial-gradient(1200px 500px at 85% -10%, rgba(242,179,56,.07), transparent 60%),
       var(--ink);
     color:var(--txt); font-family:var(--body); line-height:1.5;
-    -webkit-font-smoothing:antialiased; padding:16px 40px; min-height:100vh;}
+    -webkit-font-smoothing:antialiased; padding:16px 40px; min-height:100vh;
+    display:flex; flex-direction:column;}
   a{color:var(--gold)}
-  .wrap{max-width:min(1680px, 90vw); margin:0 auto; position:relative;}
+  .wrap{max-width:min(1680px, 90vw); margin:0 auto; position:relative; flex:1; display:flex; flex-direction:column; width:100%;}
 
   /* ---------- auth bar: sibling of .badge (not nested) so its dropdown can't get clipped by badge's overflow:hidden ---------- */
   .authbar{position:absolute; top:16px; right:14px; display:flex; align-items:center; justify-content:flex-end; gap:8px; flex-wrap:wrap; z-index:20;}
@@ -56,12 +57,13 @@
 
   /* Materi: hidden (width 0) by default, opens to full nav via toggle button.
      Main column reflows to fill the rest either way — never overlaps. */
-  .layout{display:flex; align-items:flex-start; gap:0; margin-top:10px;}
+  .layout{display:flex; align-items:stretch; gap:0; margin-top:10px; flex:1;}
   .sidebar{width:0; max-height:0; flex-shrink:0; transition:width .22s ease; overflow:hidden; position:sticky; top:12px;}
   .sidebar.open{width:340px; max-height:none; margin-right:18px;}
   /* height matched to the question card via JS (syncSidebarHeight in app.js) */
   .fullnav{width:340px; overflow-y:auto;}
-  .maincol{flex:1; min-width:0;}
+  .maincol{flex:1; min-width:0; display:flex; flex-direction:column;}
+  .maincol .card{flex:1;}
   #navToggleBtn{margin-bottom:14px; display:flex; align-items:center; font-size:15px; padding:0 22px;}
 
   .card{background:var(--panel); border:1px solid var(--line); border-radius:var(--r); }
