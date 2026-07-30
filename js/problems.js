@@ -284,6 +284,22 @@ const PROBLEM_BANK = {
      ordered:true,
      solution:"SELECT full_name, city, SUBSTR(city,1,3) AS city_code FROM registrations WHERE city LIKE '%Jakarta%' ORDER BY full_name"},
   ],
+
+  // ---- Number Functions -----------------------------------------------------
+  numbers: [
+    {id:'numbers-01', topic:'Rounding Functions', level:'Mudah', title:'Rata-rata Check-in Dibulatkan',
+     task:'Tampilkan <code>ticket_type</code> dan rata-rata <code>checked_in</code> per tipe (alias <code>avg_checkin</code>), dibulatkan ke <b>1 desimal</b> pakai <code>ROUND()</code>. Urut <code>ticket_type</code>.',
+     hint:'<code>ROUND(AVG(checked_in), 1)</code>.',
+     ordered:true,
+     solution:"SELECT ticket_type, ROUND(AVG(checked_in), 1) AS avg_checkin FROM registrations GROUP BY ticket_type ORDER BY ticket_type"},
+
+    {id:'numbers-02', topic:'Absolute Value Function', level:'Sedang', title:'Jarak Hari dari Pertengahan Event',
+     task:'Event dianggap "puncak" di tanggal <code>2026-06-15</code>. Tampilkan <code>full_name</code>, <code>reg_date</code>, dan selisih hari dari tanggal itu — <b>tanpa peduli sebelum/sesudah</b> (alias <code>days_from_mid</code>) pakai <code>ABS()</code>. Urut <code>days_from_mid</code> menaik, lalu <code>full_name</code>.',
+     hint:'<code>ABS(CAST(julianday(reg_date) - julianday(\'2026-06-15\') AS INTEGER))</code> — <code>ABS()</code> bikin selisih negatif (tanggal sebelum) jadi positif juga.',
+     ordered:true,
+     solution:"SELECT full_name, reg_date, ABS(CAST(julianday(reg_date) - julianday('2026-06-15') AS INTEGER)) AS days_from_mid FROM registrations ORDER BY days_from_mid ASC, full_name"},
+  ],
+
   // ---- Date & Time Functions -----------------------------------------------
   datetime: [
     {id:'datetime-01', topic:'strftime (DAY/MONTH/YEAR)', level:'Mudah', title:'Pendaftar Bulan Mei',
@@ -621,6 +637,12 @@ const PROBLEM_BANK = {
      hint:'<code>GROUP BY city ORDER BY total DESC, city LIMIT 5</code>.',
      ordered:true,
      solution:"SELECT city, COUNT(*) AS total FROM registrations GROUP BY city ORDER BY total DESC, city LIMIT 5"},
+
+    {id:'proj_eda-05', topic:'Date range exploration', level:'Mudah', title:'Rentang Tanggal Pendaftaran',
+     task:'Analisis rentang tanggal: tampilkan tanggal pendaftaran paling awal (<code>earliest</code>), paling akhir (<code>latest</code>), dan rentang harinya (alias <code>days_span</code>) dari seluruh data.',
+     hint:'<code>MIN(reg_date)</code>, <code>MAX(reg_date)</code>, dan <code>julianday(MAX(reg_date)) - julianday(MIN(reg_date))</code> buat selisih harinya.',
+     ordered:false,
+     solution:"SELECT MIN(reg_date) AS earliest, MAX(reg_date) AS latest, CAST(julianday(MAX(reg_date)) - julianday(MIN(reg_date)) AS INTEGER) AS days_span FROM registrations"},
   ],
   // ---- Project — Advanced Analytics ----------------------------------------
   proj_adv: [
@@ -635,6 +657,12 @@ const PROBLEM_BANK = {
      hint:'<code>COUNT(*) OVER(PARTITION BY event ORDER BY reg_date)</code> — kumulatif di-reset per event.',
      ordered:true,
      solution:"SELECT event, reg_date, COUNT(*) OVER(PARTITION BY event ORDER BY reg_date) AS cumulative_in_event FROM registrations ORDER BY event, reg_date"},
+
+    {id:'proj_adv-06', topic:'Performance analysis', level:'Sulit', title:'Bulan di Atas/Bawah Rata-rata',
+     task:'Analisis performa: untuk tiap bulan (<code>ym</code>), tampilkan jumlah pendaftar (<code>total</code>) dan bandingkan dengan rata-rata bulanan keseluruhan (alias <code>vs_avg</code>: <code>\'Di Atas Rata-rata\'</code> / <code>\'Di Bawah Rata-rata\'</code> / <code>\'Rata-rata\'</code>). Urut <code>ym</code>.',
+     hint:'CTE pertama hitung total per bulan, CTE kedua hitung rata-ratanya, lalu <code>CASE WHEN total > avgtotal THEN ... WHEN total &lt; avgtotal THEN ... ELSE ... END</code>.',
+     ordered:true,
+     solution:"WITH monthly AS (SELECT strftime('%Y-%m', reg_date) AS ym, COUNT(*) AS total FROM registrations GROUP BY ym), avgcalc AS (SELECT AVG(total) AS avgtotal FROM monthly) SELECT ym, total, CASE WHEN total > avgtotal THEN 'Di Atas Rata-rata' WHEN total < avgtotal THEN 'Di Bawah Rata-rata' ELSE 'Rata-rata' END AS vs_avg FROM monthly, avgcalc ORDER BY ym"},
 
     {id:'proj_adv-03', topic:'Part-to-whole', level:'Sedang', title:'Persentase per Tipe Tiket',
      task:'Tampilkan <code>ticket_type</code>, jumlahnya (<code>total</code>), dan persentase dari keseluruhan pendaftar (alias <code>pct_of_total</code>, dibulatkan 1 desimal). Urut <code>total</code> menurun.',
@@ -653,5 +681,11 @@ const PROBLEM_BANK = {
      hint:'<code>GROUP_CONCAT(product_interest, \', \')</code> untuk gabung string; bungkus dengan subquery ber-<code>DISTINCT</code> + <code>ORDER BY</code> supaya urutan gabungannya konsisten. Filter jumlah pendaftar pakai <code>HAVING COUNT(*) > 1</code>.',
      ordered:true,
      solution:"SELECT company, COUNT(*) AS total_registrant, (SELECT GROUP_CONCAT(product_interest, ', ') FROM (SELECT DISTINCT product_interest FROM registrations r2 WHERE r2.company = r.company ORDER BY product_interest)) AS products FROM registrations r WHERE company IS NOT NULL GROUP BY company HAVING COUNT(*) > 1 ORDER BY company"},
+
+    {id:'proj_adv-07', topic:'Customer & product reports', level:'Sedang', title:'Laporan Ringkas per Produk',
+     task:'Kali ini dari sisi "produk": buat laporan ringkas per <code>product_interest</code> — jumlah peminat (<code>total_interest</code>) dan jumlah yang sudah check-in (<code>total_checkin</code>). Urut <code>total_interest</code> menurun.',
+     hint:'<code>GROUP BY product_interest</code> dengan <code>COUNT(*)</code> dan <code>SUM(checked_in)</code>.',
+     ordered:true,
+     solution:"SELECT product_interest, COUNT(*) AS total_interest, SUM(checked_in) AS total_checkin FROM registrations GROUP BY product_interest ORDER BY total_interest DESC"},
   ],
 };

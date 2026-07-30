@@ -58,7 +58,7 @@ source code, gated usage.
 | `js/auth.js` | Supabase client, email/password login/signup/logout UI (avatar + dropdown), `initAuth()`, `window.onAuthChange` hook |
 | `js/data.js` | `DATA_SQL` — `registrations` (30 rows) + `exhibitors` (12 rows, for the joins module) |
 | `js/curriculum.js` | `CURRICULUM` array = course modules → topics + `engine` flag (order matches the "SQL with Baraa" course) |
-| `js/problems.js` | `SCHEMA` + `PROBLEM_BANK` — 93 problems across all 20 practiceable modules |
+| `js/problems.js` | `SCHEMA` + `PROBLEM_BANK` — 98 problems across all 21 practiceable modules |
 | `js/utils.js` | `$` / `esc` — shared by every script below, must load first |
 | `js/ui.js` | schema table, nav accordion, `selectProblem`, `syncSidebarHeight`, result/verdict rendering, editor auto-uppercase + column suggestions |
 | `js/grader.js` | `runQuery`, `gridOf`, `judge` |

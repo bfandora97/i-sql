@@ -37,6 +37,9 @@ const CURRICULUM = [
     topics:['CONCAT','UPPER & LOWER','TRIM','REPLACE','LENGTH','SUBSTR / LEFT & RIGHT'],
     note:'Nama fungsi beda dari T-SQL: SQLite pakai LENGTH() bukan LEN(), SUBSTR() bukan SUBSTRING(), || untuk concat.' },
 
+  { id:'numbers', module:'Number Functions', engine:'sqlite',
+    topics:['Rounding Functions','Absolute Value Function'] },
+
   { id:'datetime', module:'Date & Time Functions', engine:'sqlite',
     topics:['strftime (DAY/MONTH/YEAR)','date() arithmetic','Date diff','Formatting'],
     note:'T-SQL DATEPART/DATENAME/DATEADD/EOMONTH tidak ada di SQLite. Padanannya: strftime() & date(). Materi Baraa versi SQL Server dipraktikkan di SSMS.' },
@@ -88,11 +91,15 @@ const CURRICULUM = [
   { id:'perf', module:'Performance Best Practices', engine:'concept',
     topics:['Fetching','Filtering','Joining','Aggregation','Indexing'] },
 
+  { id:'ai_sql', module:'AI & SQL', engine:'concept',
+    topics:['Solve a Task','Improve Readability','Optimize Performance','Debugging','Explain a Result','Styling & Formatting','Documentation'],
+    note:'Materi terbaru dari course Baraa: prompt-prompt buat manfaatin AI (ChatGPT/Copilot/dll) bantu nulis, rapiin, optimasi, dan debug query SQL. Konsep/checklist, bukan soal gradable.' },
+
   // ---- Capstone projects (checklists, not auto-graded queries) ----
   { id:'proj_dwh', module:'Project — Data Warehouse', engine:'concept',
     topics:['Bronze / Silver / Gold','ETL','Naming conventions','Documentation'] },
   { id:'proj_eda', module:'Project — EDA', engine:'sqlite',
-    topics:['Database exploration','Dimensions vs measures','Magnitude analysis','Ranking analysis'] },
+    topics:['Database exploration','Dimensions vs measures','Date range exploration','Magnitude analysis','Ranking analysis'] },
   { id:'proj_adv', module:'Project — Advanced Analytics', engine:'sqlite',
-    topics:['Change over time','Cumulative analysis','Part-to-whole','Segmentation','Customer & product reports'] },
+    topics:['Change over time','Cumulative analysis','Performance analysis','Part-to-whole','Segmentation','Customer & product reports'] },
 ];

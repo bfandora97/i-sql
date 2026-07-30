@@ -16,3 +16,6 @@ npm-debug.log*
 
 # Claude Code local state
 .claude/
+
+# Third-party reference material (Baraa's course zips) - not ours to publish
+i-bara/
