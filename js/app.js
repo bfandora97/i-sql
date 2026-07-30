@@ -43,6 +43,7 @@ async function boot() {
         syncSidebarHeight();
       };
       window.addEventListener('resize', syncSidebarHeight);
+      $('sidebar').classList.add('open');
       buildSchema();
       buildNav();
       refreshProgress();
