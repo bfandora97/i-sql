@@ -60,7 +60,11 @@
   .sidebar{width:0; max-height:0; flex-shrink:0; transition:width .22s ease; overflow:hidden; position:sticky; top:12px;}
   .sidebar.open{width:340px; max-height:none; margin-right:18px;}
   /* height matched to the question card via JS (syncSidebarHeight in app.js) */
-  .fullnav{width:340px; overflow-y:auto;}
+  .fullnav{width:340px; overflow-y:auto; scrollbar-width:auto; scrollbar-color:var(--gold) #171a26;}
+  .fullnav::-webkit-scrollbar{width:14px;}
+  .fullnav::-webkit-scrollbar-track{background:#171a26; border-radius:8px;}
+  .fullnav::-webkit-scrollbar-thumb{background:var(--gold); border-radius:8px; border:3px solid #171a26;}
+  .fullnav::-webkit-scrollbar-thumb:hover{background:#e08b2a;}
   .maincol{flex:1; min-width:0;}
   #navToggleBtn{margin-bottom:14px; display:flex; align-items:center; font-size:15px; padding:0 22px;}
 
