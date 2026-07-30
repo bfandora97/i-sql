@@ -385,5 +385,73 @@ window.addEventListener('DOMContentLoaded', () => {
     if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') { e.preventDefault(); runQuery(); }
     if (e.key === 'Tab') { e.preventDefault(); const s=ed.selectionStart, en=ed.selectionEnd;
       ed.value = ed.value.slice(0,s) + '  ' + ed.value.slice(en); ed.selectionStart = ed.selectionEnd = s+2; }
+    if (e.key === 'Escape') hideColumnSuggestions();
   });
+  if (ed) ed.addEventListener('input', () => {
+    autoUppercaseKeyword(ed);
+    showColumnSuggestions(ed);
+  });
+  if (ed) ed.addEventListener('blur', () => setTimeout(hideColumnSuggestions, 150));
 });
+
+// --- auto-uppercase SQL keywords as you type (textarea can't do bold/color) --
+const SQL_KEYWORDS = new Set(['SELECT','FROM','WHERE','AND','OR','NOT','ORDER','BY','GROUP','HAVING',
+  'LIMIT','DISTINCT','JOIN','INNER','LEFT','RIGHT','FULL','OUTER','CROSS','ON','AS','IN','BETWEEN','LIKE',
+  'IS','NULL','INSERT','INTO','VALUES','UPDATE','SET','DELETE','CREATE','TABLE','ALTER','DROP','ADD',
+  'COLUMN','VIEW','WITH','RECURSIVE','UNION','ALL','EXCEPT','INTERSECT','CASE','WHEN','THEN','ELSE','END',
+  'ASC','DESC','TOP','EXISTS','ANY','COUNT','SUM','AVG','MIN','MAX','OVER','PARTITION','ROWS','RANGE',
+  'PRECEDING','FOLLOWING','CURRENT','ROW','TEMP','TEMPORARY']);
+
+function autoUppercaseKeyword(ed) {
+  const val = ed.value;
+  const pos = ed.selectionStart;
+  if (pos === 0 || pos !== ed.selectionEnd) return;
+  const lastChar = val[pos - 1];
+  if (!/[\s,();]/.test(lastChar)) return;
+  let start = pos - 2;
+  while (start >= 0 && /[A-Za-z_]/.test(val[start])) start--;
+  start++;
+  const word = val.slice(start, pos - 1);
+  if (word && SQL_KEYWORDS.has(word.toUpperCase()) && word !== word.toUpperCase()) {
+    ed.value = val.slice(0, start) + word.toUpperCase() + val.slice(pos - 1);
+    ed.selectionStart = ed.selectionEnd = pos;
+  }
+}
+
+// --- column/table name suggestions, shown below the editor -------------------
+function getCurrentWord(ed) {
+  const val = ed.value;
+  const pos = ed.selectionStart;
+  let start = pos;
+  while (start > 0 && /[A-Za-z0-9_]/.test(val[start - 1])) start--;
+  return { word: val.slice(start, pos), start, end: pos };
+}
+
+function showColumnSuggestions(ed) {
+  const { word, start, end } = getCurrentWord(ed);
+  if (word.length < 2) { hideColumnSuggestions(); return; }
+  const names = [...new Set(SCHEMA.map(r => r[1]))];
+  const tables = [...new Set(SCHEMA.map(r => r[0]))];
+  const matches = [...tables, ...names].filter(n =>
+    n.toLowerCase().startsWith(word.toLowerCase()) && n.toLowerCase() !== word.toLowerCase()
+  ).slice(0, 8);
+  if (!matches.length) { hideColumnSuggestions(); return; }
+  $('colSuggest').innerHTML = matches.map(m => `<span class="col-suggest-item" data-val="${esc(m)}">${esc(m)}</span>`).join('');
+  $('colSuggest').style.display = 'flex';
+  $('colSuggest').querySelectorAll('.col-suggest-item').forEach(item => {
+    item.onmousedown = (e) => {
+      e.preventDefault();
+      const val = ed.value;
+      const insert = item.dataset.val;
+      ed.value = val.slice(0, start) + insert + val.slice(end);
+      ed.focus();
+      const newPos = start + insert.length;
+      ed.selectionStart = ed.selectionEnd = newPos;
+      hideColumnSuggestions();
+    };
+  });
+}
+
+function hideColumnSuggestions() {
+  $('colSuggest').style.display = 'none';
+}

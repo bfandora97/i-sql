@@ -142,6 +142,10 @@
     border-radius:10px; padding:14px 15px; font-family:var(--mono); font-size:13.5px; line-height:1.6; outline:none; tab-size:2;}
   textarea#ed:focus{border-color:var(--gold); box-shadow:0 0 0 3px rgba(242,179,56,.12)}
   .kbd{font-family:var(--mono); font-size:11px; color:var(--faint)}
+  .col-suggest{display:flex; flex-wrap:wrap; gap:6px; margin-top:8px;}
+  .col-suggest-item{font-family:var(--mono); font-size:12px; padding:4px 10px; border-radius:6px;
+    border:1px solid var(--line); background:#171a26; color:#ffd479; cursor:pointer; transition:.14s;}
+  .col-suggest-item:hover{border-color:var(--gold); background:var(--panel2);}
 
   /* verdict */
   .verdict{margin-top:14px; border-radius:10px; padding:12px 15px; font-size:13.5px; display:none; align-items:flex-start; gap:10px}
