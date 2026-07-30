@@ -74,10 +74,13 @@
 
   #nav{margin-bottom:14px;}
 
-  /* group headers splitting the nav into "Dasar" vs "Proyek" */
-  .navgroup-label{font-family:var(--disp); font-size:12px; font-weight:700; letter-spacing:.06em; text-transform:uppercase;
-    color:var(--gold); margin:16px 0 4px; padding-bottom:6px; border-bottom:1px solid var(--line);}
-  .navgroup-label:first-child{margin-top:0;}
+  /* top-level "folders" splitting the nav into Dasar / Proyek — collapsed by
+     default, modules only show once the folder itself is expanded */
+  #nav > details.navroot{margin-top:0; padding-top:0; border-top:none;}
+  #nav > details.navroot + details.navroot{margin-top:14px; padding-top:14px; border-top:1px solid var(--line);}
+  #nav details.navroot > summary{font-family:var(--disp); font-size:13px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--gold);}
+  .navroot-body{padding-left:6px; margin-top:6px; border-left:1px dashed var(--line);}
+  .navroot-body > details.modsec:first-child{margin-top:0; padding-top:0; border-top:none;}
 
   /* module (bab) accordion in nav — reuses details/summary styling below */
   #nav details.modsec{margin-top:10px; padding-top:10px;}

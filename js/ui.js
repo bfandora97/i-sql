@@ -59,18 +59,24 @@ function buildNav() {
     return parts.join('');
   };
 
-  // two top-level groups: fundamentals first, then capstone projects (id prefix 'proj_')
+  // two top-level "folders": fundamentals first, then capstone projects (id prefix 'proj_').
+  // Each renders as its own collapsible <details> — modules inside only exist in the
+  // DOM/are reachable once its folder is expanded, like a file-tree.
   const basicMods = CURRICULUM.filter(m => !m.id.startsWith('proj_'));
   const projectMods = CURRICULUM.filter(m => m.id.startsWith('proj_'));
+  const openInProject = projectMods.some(m => m.id === openModId);
+
+  const renderRoot = (id, icon, label, mods, isOpen) => {
+    const body = mods.map(renderModule).join('');
+    return `<details class="navroot"${isOpen ? ' open' : ''} data-rootid="${id}"><summary>${icon} ${esc(label)}</summary><div class="navroot-body">${body}</div></details>`;
+  };
 
   const parts = [];
-  parts.push('<div class="navgroup-label">📘 Dasar</div>');
-  basicMods.forEach(mod => parts.push(renderModule(mod)));
-  parts.push('<div class="navgroup-label">🚀 Proyek</div>');
-  projectMods.forEach(mod => parts.push(renderModule(mod)));
+  parts.push(renderRoot('dasar', '📘', 'Dasar', basicMods, !openInProject));
+  parts.push(renderRoot('proyek', '🚀', 'Proyek', projectMods, openInProject));
   $('nav').innerHTML = parts.join('');
 
-  // accordion: opening one module (bab) closes the others
+  // accordion: opening one module (bab) closes the other modules (within its own folder or across)
   const sections = $('nav').querySelectorAll('details.modsec');
   sections.forEach(sec => {
     sec.addEventListener('toggle', () => {
