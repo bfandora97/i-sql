@@ -140,8 +140,30 @@ function selectProblem(problem) {
     chip.classList.toggle('active', chip.dataset.id === problem.id);
   });
 
+  renderExamplePreview(problem);
   $('ptitle').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   syncSidebarHeight();
+}
+
+// --- example preview: run the solution quietly, show the first few rows so
+//     students see the expected shape/format before writing their own query.
+function renderExamplePreview(problem) {
+  if (!db) { $('examplewrap').style.display = 'none'; return; }
+  try {
+    db.run(DATA_SQL);
+    const g = gridOf(db.exec(problem.solution));
+    db.run(DATA_SQL); // leave the shared db reset for whatever runs next
+    if (!g.cols.length) { $('examplewrap').style.display = 'none'; return; }
+    const previewRows = g.rows.slice(0, 3);
+    const head = '<tr>' + g.cols.map(c => `<th>${esc(c)}</th>`).join('') + '</tr>';
+    const body = previewRows.map(r =>
+      '<tr>' + r.map(c => c === null ? '<td class="null">NULL</td>' : `<td>${esc(c)}</td>`).join('') + '</tr>'
+    ).join('');
+    $('exampleRes').innerHTML = head + body;
+    $('examplewrap').style.display = 'block';
+  } catch {
+    $('examplewrap').style.display = 'none';
+  }
 }
 
 // --- Materi sidebar always matches the question card's height, so both
