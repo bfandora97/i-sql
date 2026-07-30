@@ -26,12 +26,16 @@ function buildNav() {
   const parts = [];
   CURRICULUM.forEach(mod => {
     const openAttr = mod.id === openModId ? ' open' : '';
-    parts.push(`<details class="modsec"${openAttr} data-modid="${esc(mod.id)}"><summary>${esc(mod.module)}</summary>`);
+    const modProbs = PROBLEM_BANK[mod.id] || [];
+    const modComplete = modProbs.length > 0 && modProbs.every(p => solved.has(p.id));
+    const modCls = modComplete ? ' modsec complete' : ' modsec';
+    const check = modComplete ? '<span class="modcheck">✓</span> ' : '';
+    parts.push(`<details class="${modCls.trim()}"${openAttr} data-modid="${esc(mod.id)}"><summary>${check}${esc(mod.module)}</summary>`);
 
     if (mod.engine === 'tsql' || mod.engine === 'concept') {
       parts.push(`<div class="hint">${esc(mod.note || 'Materi teori — tidak ada soal interaktif di app ini.')}</div>`);
     } else {
-      const probs = PROBLEM_BANK[mod.id] || [];
+      const probs = modProbs;
       if (!probs.length) {
         parts.push(`<div class="hint">Belum ada soal untuk modul ini.</div>`);
       } else {
