@@ -22,9 +22,10 @@ source code, gated usage.
 - **No build tooling / no frameworks.** Keep it vanilla. Files load as classic
   `<script>` tags in `index.html`, in this order: sql.js (CDN) → supabase-js
   (CDN) → `supabase-config.js` → `auth.js` → `data.js` → `curriculum.js` →
-  `problems.js` → `app.js`. Top-level `const`s/functions are shared globals
-  across these scripts; don't convert to ES modules (must work over `file://`
-  and GitHub Pages).
+  `problems.js` → `utils.js` → `ui.js` → `grader.js` → `progress.js` →
+  `app.js`. Top-level `const`s/functions are shared globals across these
+  scripts (no bundler, no modules); `app.js` loads last since it's the only
+  one that calls functions defined in the others and kicks off `boot()`.
 - **Don't fake results.** All grading runs real SQL through sql.js.
 - **Match the existing visual style.** Palette, fonts, and component classes
   are defined in `css/styles.css` (dark indigo, gold accent, IBM Plex Mono /
@@ -58,7 +59,11 @@ source code, gated usage.
 | `js/data.js` | `DATA_SQL` — `registrations` (30 rows) + `exhibitors` (12 rows, for the joins module) |
 | `js/curriculum.js` | `CURRICULUM` array = course modules → topics + `engine` flag (order matches the "SQL with Baraa" course) |
 | `js/problems.js` | `SCHEMA` + `PROBLEM_BANK` — 93 problems across all 20 practiceable modules |
-| `js/app.js` | boot, grader, nav, sidebar layout/sync, editor helpers, progress persistence |
+| `js/utils.js` | `$` / `esc` — shared by every script below, must load first |
+| `js/ui.js` | schema table, nav accordion, `selectProblem`, `syncSidebarHeight`, result/verdict rendering, editor auto-uppercase + column suggestions |
+| `js/grader.js` | `runQuery`, `gridOf`, `judge` |
+| `js/progress.js` | `loadProgress`/`saveProgress`/`resetProgress`/`refreshProgress` (Supabase + localStorage) |
+| `js/app.js` | shared state vars (`db`, `current`, `solved`, `displayNum`), `boot()`, toolbar/editor event wiring — entry point, loads last |
 | `data/supabase_setup.sql` | one-time SQL to run in the Supabase SQL Editor (creates `solved_problems` + RLS policies) |
 | `data/registrations.csv` / `.sql` | source dump the dummy dataset in `data.js` was built from |
 
