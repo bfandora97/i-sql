@@ -37,7 +37,8 @@ function buildNav() {
     } else {
       const probs = modProbs;
       if (!probs.length) {
-        parts.push(`<div class="hint">Belum ada soal untuk modul ini.</div>`);
+        const placeholder = mod.note ? `${esc(mod.note)} <i>(Belum ada soal.)</i>` : 'Belum ada soal untuk modul ini.';
+        parts.push(`<div class="hint">${placeholder}</div>`);
       } else {
         // group chips by topic (sub-bab), in the order topics are listed in curriculum.js
         const byTopic = {};

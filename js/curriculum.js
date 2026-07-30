@@ -102,4 +102,7 @@ const CURRICULUM = [
     topics:['Database exploration','Dimensions vs measures','Date range exploration','Magnitude analysis','Ranking analysis'] },
   { id:'proj_adv', module:'Project — Advanced Analytics', engine:'sqlite',
     topics:['Change over time','Cumulative analysis','Performance analysis','Part-to-whole','Segmentation','Customer & product reports'] },
+  { id:'proj_fhtb2024', module:'Project — FHTB 2024 Report Analysis', engine:'sqlite',
+    topics:['Attendee demographics','Exhibitor breakdown','Satisfaction metrics','Business matching funnel','Interest vs supply matching'],
+    note:'Dataset baru: fhtb_attendees / fhtb_exhibitors / fhtb_meetings, dikalibrasi dari angka asli di FHTB-2024-Post-Show-Report.pdf (breakdown negara, job function, tingkat kepuasan, funnel business matching 564→429). Nama orang/perusahaan dummy, tapi persentase & totalnya real. Soal ditambah bertahap.' },
 ];

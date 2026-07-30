@@ -19,3 +19,7 @@ npm-debug.log*
 
 # Third-party reference material (Baraa's course zips) - not ours to publish
 i-bara/
+
+# Source report used to calibrate the FHTB 2024 dummy dataset (js/data.js) -
+# 22MB PDF, not needed at runtime, kept local as reference only
+FHTB-2024-Post-Show-Report.pdf
