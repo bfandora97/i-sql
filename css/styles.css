@@ -74,6 +74,11 @@
 
   #nav{margin-bottom:14px;}
 
+  /* group headers splitting the nav into "Dasar" vs "Proyek" */
+  .navgroup-label{font-family:var(--disp); font-size:12px; font-weight:700; letter-spacing:.06em; text-transform:uppercase;
+    color:var(--gold); margin:16px 0 4px; padding-bottom:6px; border-bottom:1px solid var(--line);}
+  .navgroup-label:first-child{margin-top:0;}
+
   /* module (bab) accordion in nav — reuses details/summary styling below */
   #nav details.modsec{margin-top:10px; padding-top:10px;}
   #nav details.modsec summary{font-size:12.5px; text-transform:uppercase; letter-spacing:.04em;}

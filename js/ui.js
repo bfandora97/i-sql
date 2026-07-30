@@ -23,8 +23,8 @@ function buildSchema() {
 function buildNav() {
   const openModId = current ? findModuleIdForProblem(current.id) : firstPracticeableModuleId();
 
-  const parts = [];
-  CURRICULUM.forEach(mod => {
+  const renderModule = (mod) => {
+    const parts = [];
     const openAttr = mod.id === openModId ? ' open' : '';
     const modProbs = PROBLEM_BANK[mod.id] || [];
     const modComplete = modProbs.length > 0 && modProbs.every(p => solved.has(p.id));
@@ -56,7 +56,18 @@ function buildNav() {
       }
     }
     parts.push('</details>');
-  });
+    return parts.join('');
+  };
+
+  // two top-level groups: fundamentals first, then capstone projects (id prefix 'proj_')
+  const basicMods = CURRICULUM.filter(m => !m.id.startsWith('proj_'));
+  const projectMods = CURRICULUM.filter(m => m.id.startsWith('proj_'));
+
+  const parts = [];
+  parts.push('<div class="navgroup-label">📘 Dasar</div>');
+  basicMods.forEach(mod => parts.push(renderModule(mod)));
+  parts.push('<div class="navgroup-label">🚀 Proyek</div>');
+  projectMods.forEach(mod => parts.push(renderModule(mod)));
   $('nav').innerHTML = parts.join('');
 
   // accordion: opening one module (bab) closes the others
