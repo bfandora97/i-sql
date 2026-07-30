@@ -154,9 +154,9 @@ function selectProblem(problem) {
 function renderExamplePreview(problem) {
   if (!db) { $('examplewrap').style.display = 'none'; return; }
   try {
-    db.run(DATA_SQL);
+    resetDb();
     const g = gridOf(db.exec(problem.solution));
-    db.run(DATA_SQL); // leave the shared db reset for whatever runs next
+    resetDb(); // leave a genuinely clean db for whatever runs next (runQuery, etc.)
     if (!g.cols.length) { $('examplewrap').style.display = 'none'; return; }
     const previewRows = g.rows.slice(0, 3);
     const head = '<tr>' + g.cols.map(c => `<th>${esc(c)}</th>`).join('') + '</tr>';

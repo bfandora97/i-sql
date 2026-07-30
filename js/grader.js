@@ -11,7 +11,7 @@ function runQuery() {
   const sql = $('ed').value.trim();
   if (!sql) { showVerdict('err', 'Query masih kosong.'); return; }
 
-  db.run(DATA_SQL);
+  resetDb();
   let res;
   try {
     res = db.exec(sql);
@@ -22,7 +22,7 @@ function runQuery() {
   const userGrid = gridOf(res);
   renderResult(userGrid);
 
-  db.run(DATA_SQL);
+  resetDb();
   const solGrid = gridOf(db.exec(current.solution));
 
   const verdict = judge(userGrid, solGrid, current.ordered);

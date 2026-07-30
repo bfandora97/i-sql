@@ -5,9 +5,21 @@
 // ===========================================================================
 
 let db = null;
+let SQLModule = null;               // sql.js module (needed to spin up a truly fresh db)
 let current = null;                 // current problem object
 let solved = new Set();             // Set of solved problem ids (persisted)
 let displayNum = {};                // problem.id -> Q-number shown in nav (topic display order)
+
+// Spin up a genuinely fresh database instead of just re-running DATA_SQL on
+// the same instance — DATA_SQL only knows how to reset the tables it defines
+// (registrations/exhibitors), so any ad-hoc table/view a DDL/CTAS/Views
+// solution created (e.g. CREATE TABLE event_notes) would otherwise survive
+// a "reset" and collide with the next CREATE of the same name.
+function resetDb() {
+  db = new SQLModule.Database();
+  db.run(DATA_SQL);
+  return db;
+}
 
 // --- boot -------------------------------------------------------------------
 // Login is required: the app only loads once a Supabase session exists.
@@ -27,8 +39,8 @@ async function boot() {
 
   initSqlJs({ locateFile: f => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/${f}` })
     .then(SQL => {
-      db = new SQL.Database();
-      db.run(DATA_SQL);
+      SQLModule = SQL;
+      resetDb();
       $('loader').style.display = 'none';
       $('app').style.display = 'flex';
       $('materibar').style.display = 'flex';
