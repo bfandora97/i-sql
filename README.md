@@ -1,4 +1,4 @@
-# SQL Query Pass — FHI · FHTB
+# SQL Query Pass — FBX · HTX
 
 An interactive, browser-based SQL practice console. Write a query, hit **Run &
 Cek**, and get graded instantly against a real exhibition-registration dataset.
@@ -18,7 +18,7 @@ GitHub Pages as-is.
 - **Auto-grading** — your result set is compared against a reference solution
   (order-sensitive when the task calls for it).
 - **Course-aligned** — the problem bank mirrors the SQL with Baraa modules.
-- **Domain data** — 30 realistic FHI 2026 / FHTB 2026 visitor registrations,
+- **Domain data** — 30 fictional FBX 2026 / HTX 2026 visitor registrations,
   complete with duplicate emails, mixed phone formats, and NULLs for later
   cleaning-focused topics.
 - **Progress persistence** — solved problems are remembered via `localStorage`.

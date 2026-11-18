@@ -6,7 +6,7 @@ Guidance for Claude Code when working in this repo.
 
 A static, in-browser SQL practice app (HackerRank-style), branded "SQL
 Practice Console" (by **bobbifndr**), built on the "SQL with Baraa" course
-curriculum, using an FHI/FHTB exhibition-registration dataset. SQLite runs
+curriculum, using an FBX/HTX exhibition-registration dataset. SQLite runs
 client-side via sql.js (WASM). No build tooling, no framework — plain
 HTML/CSS/JS served as static files, deployed on GitHub Pages
 (**https://bfandora97.github.io/i-sql/**). Login is backed by Supabase (see
